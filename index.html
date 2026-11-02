@@ -112,9 +112,7 @@ input:focus,select:focus,textarea:focus,button:focus-visible{outline:2px solid v
 .f-photo.ph{display:flex;align-items:center;justify-content:center;font-weight:800;font-size:16pt;color:#7A8791}
 .f-body{position:absolute;left:3.5mm;right:3.5mm;top:51.6mm;bottom:7.4mm;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center}
 .f-name,.f-role{width:100%;overflow:hidden}
-.f-name{font-family:Arial,Helvetica,sans-serif;font-size:7.4pt;font-weight:700;line-height:1.22;letter-spacing:.01em;color:#16232E}
-.f-name span{display:block;text-wrap:balance}
-.f-name .g{white-space:nowrap}
+.f-name{font-family:Arial,Helvetica,sans-serif;font-size:7.4pt;font-weight:700;line-height:1.22;letter-spacing:.01em;text-align:justify;text-align-last:center;hyphens:none;color:#16232E}
 .f-role{font-size:6.2pt;font-weight:700;line-height:1.25;letter-spacing:.03em;color:var(--brand);margin-top:1.8mm}
 .f-no{margin-top:2.6mm;width:80%;padding-top:1.3mm;border-top:.2mm solid var(--accent);display:flex;align-items:baseline;justify-content:center;gap:1.4mm;white-space:nowrap}
 .f-no small{font-size:6pt;letter-spacing:.08em;color:#16232E;font-weight:700}
@@ -422,9 +420,9 @@ function front(p){
     <div class="f-head">${logo ? `<img src="${logo}" alt="">` : ''}<div class="f-inst"><b>${esc(s.instansi)}</b><small>${esc(s.subjudul)}</small></div></div>
     ${u ? `<img class="f-photo" src="${u}" alt="">` : `<div class="f-photo ph">${esc(initials(p.nama))}</div>`}
     <div class="f-body">
-      <div class="f-name" data-fit="7.4" data-min="5.4" data-lines="${gl ? 3 : 2}"><span>${esc(nm)}${gl ? ',' : ''}</span>${gl ? `<span class="g">${esc(gl)}</span>` : ''}</div>
+      <div class="f-name" data-fit="7.4" data-min="5.4" data-lines="3">${esc(String(p.nama || '').replace(/\s+/g, ' ').trim())}</div>
       <div class="f-role" data-fit="6.2" data-min="4.8" data-lines="2">${esc(jabatanKartu(p))}</div>
-      <div class="f-no"><small>NIPY</small><b>${esc(p.nomor)}</b></div>
+      <div class="f-no"><small>NIPY.</small><b>${esc(p.nomor)}</b></div>
     </div>
     <div class="f-foot">${p.berlaku ? 'Berlaku s/d ' + esc(fmt(p.berlaku)) : esc(s.tipe)}</div>
   </div>`;
