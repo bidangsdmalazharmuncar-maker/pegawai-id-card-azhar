@@ -6,7 +6,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>CETAK ID CARD PEGAWAI YAYASAN PENDIDIKAN ISLAM DAN SOSIAL AL AZHAR MUNCAR</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=Amiri:wght@700&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Aref+Ruqaa:wght@700&family=Amiri:wght@700&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcode-generator/1.4.4/qrcode.min.js"></script>
 <style>
 :root{--ink:#16232E;--muted:#5C6A73;--paper:#EDEFEA;--panel:#fff;--line:#D6DAD2;--brand:#1F4E5F;--amber:#E9A826;--danger:#B3382C;--ok:#2F7A4F}
@@ -106,7 +106,7 @@ input:focus,select:focus,textarea:focus,button:focus-visible{outline:2px solid v
   background:radial-gradient(circle at 88% -10%,rgba(255,255,255,.16),transparent 55%),repeating-linear-gradient(135deg,rgba(255,255,255,.035) 0 .35mm,transparent .35mm 1.4mm),var(--brand)}
 .f-head img{flex:none;width:9mm;height:9mm;object-fit:contain;background:#fff;border-radius:50%;padding:.7mm;box-shadow:0 0 0 .3mm var(--accent)}
 .f-inst{flex:1;min-width:0}
-.f-inst .ar{display:block;font-family:'Amiri','Noto Naskh Arabic','Traditional Arabic',Arial,serif;font-size:8.5pt;font-weight:700;line-height:1.25;white-space:nowrap;overflow:hidden;direction:rtl;text-align:left;color:#fff}
+.f-inst .ar{display:block;font-family:'Aref Ruqaa','Amiri','Noto Naskh Arabic','Traditional Arabic',Arial,serif;font-size:9pt;font-weight:700;line-height:1.35;white-space:nowrap;overflow:hidden;direction:rtl;text-align:left;color:#fff}
 .f-inst b{display:block;font-size:6.1pt;line-height:1.18;font-weight:800;letter-spacing:.01em;overflow:hidden}
 .f-inst small{display:block;font-size:4.7pt;line-height:1.2;margin-top:.6mm;color:var(--accent);font-weight:600;letter-spacing:.04em;white-space:nowrap}
 .f-inst{padding-top:.3mm;min-width:0}
@@ -429,7 +429,7 @@ function front(p){
   const s = S.settings, u = imgUrl(p.foto), logo = imgUrl(s.logo), hd = headerText(s);
   return `<div class="card" style="--brand:${esc(s.warna)};--accent:${esc(s.aksen)}">
     <div class="f-arc"></div>
-    <div class="f-head">${logo ? `<img src="${logo}" alt="">` : ''}<div class="f-inst">${hd.arab ? `<span class="ar" data-fit="8.5" data-min="5" data-lines="1">${esc(hd.arab)}</span>` : ''}<b data-fit="6.1" data-min="4.4" data-lines="2">${esc(hd.nama)}</b><small>${esc(s.subjudul)}</small></div></div>
+    <div class="f-head">${logo ? `<img src="${logo}" alt="">` : ''}<div class="f-inst">${hd.arab ? `<span class="ar" data-fit="9" data-min="5" data-lines="1">${esc(hd.arab)}</span>` : ''}<b data-fit="6.1" data-min="4.4" data-lines="2">${esc(hd.nama)}</b><small>${esc(s.subjudul)}</small></div></div>
     ${u ? `<img class="f-photo" src="${u}" alt="">` : `<div class="f-photo ph">${esc(initials(p.nama))}</div>`}
     <div class="f-body">
       <div class="f-name" data-fit="7.4" data-min="5.4" data-lines="3">${esc(String(p.nama || '').replace(/\s+/g, ' ').trim())}</div>
@@ -524,7 +524,7 @@ function renderSettings(){
       try { S.logo = await toDataUrl(file, 320, 320, 'image/png', 'fit'); $('#logoState').textContent = 'Logo baru siap disimpan.'; }
       catch (err) { toast(err.message, true); }
     });
-    f.elements.arab.dir = 'rtl'; f.elements.arab.style.fontFamily = "'Amiri','Noto Naskh Arabic',Arial,serif"; f.elements.arab.style.fontSize = '18px';
+    f.elements.arab.dir = 'rtl'; f.elements.arab.style.fontFamily = "'Aref Ruqaa','Amiri','Noto Naskh Arabic',Arial,serif"; f.elements.arab.style.fontSize = '18px';
     setBuilt = true;
   }
   SET_FIELDS.forEach(([k, label]) => { if (f.elements[k]) f.elements[k].value = S.settings[k] || ''; });
