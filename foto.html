@@ -1,0 +1,220 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<base target="_top">
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>UNGGAH FOTO KARTU PEGAWAI YAYASAN PENDIDIKAN ISLAM DAN SOSIAL AL AZHAR MUNCAR</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+:root{--ink:#16232E;--muted:#5C6A73;--paper:#EDEFEA;--line:#D6DAD2;--brand:#1F4E5F;--amber:#E9A826;--danger:#B3382C;--ok:#2F7A4F}
+*{box-sizing:border-box}
+[hidden]{display:none!important}
+body{margin:0;font:15px/1.5 'Plus Jakarta Sans',system-ui,sans-serif;color:var(--ink);background:var(--paper)}
+.wrap{max-width:460px;margin:0 auto;padding:20px 18px 48px}
+.hd{display:flex;align-items:center;gap:12px;margin-bottom:18px}
+.hd img{height:44px;width:auto;max-width:60px;object-fit:contain}
+.hd b{display:block;font-weight:800;line-height:1.2}
+.hd small{color:var(--muted)}
+.box{background:#fff;border:1px solid var(--line);border-radius:12px;padding:20px}
+.box::before{content:"";display:block;height:4px;margin:-20px -20px 16px;background:var(--amber);border-radius:12px 12px 0 0}
+h1{font-size:20px;line-height:1.25;margin:0 0 6px}
+p{margin:0 0 14px}
+.muted{color:var(--muted);font-size:13.5px}
+label{display:block;font-size:13px;font-weight:600;color:var(--muted);margin-bottom:12px}
+input[type=text],input[type=password]{display:block;width:100%;margin-top:4px;padding:11px 12px;border:1px solid var(--line);border-radius:8px;font:inherit;color:var(--ink)}
+input:focus,button:focus-visible{outline:2px solid var(--amber);outline-offset:1px}
+.btn{display:block;width:100%;border:1px solid var(--line);background:#fff;padding:12px 14px;border-radius:8px;font:inherit;font-weight:700;cursor:pointer;text-align:center;color:var(--ink)}
+.btn.primary{background:var(--brand);border-color:var(--brand);color:#fff}
+.btn:disabled{opacity:.5;cursor:not-allowed}
+.row{display:flex;gap:10px}
+.row .btn{flex:1}
+.err{color:var(--danger);font-size:13.5px;margin:0 0 12px;min-height:0}
+.step{display:none}.step.on{display:block}
+.who{background:#F4F6F2;border-radius:8px;padding:10px 12px;margin-bottom:14px}
+.who b{display:block}
+.tips{margin:0 0 14px;padding-left:18px;color:var(--muted);font-size:13.5px}
+.tips li{margin-bottom:2px}
+.stage{position:relative;width:min(230px,100%);aspect-ratio:3/4;margin:0 auto 12px;background:#E3E6DF;border-radius:10px;overflow:hidden;touch-action:auto}
+.stage.has{touch-action:none}
+.stage canvas{width:100%;height:100%;display:block;cursor:grab}
+.guide{position:absolute;left:22%;right:22%;top:12%;bottom:30%;border:2px dashed rgba(255,255,255,.9);border-radius:50%;box-shadow:0 0 0 1px rgba(0,0,0,.25);pointer-events:none}
+.empty{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;text-align:center;color:var(--muted);padding:20px;font-size:13.5px;pointer-events:none}
+.zoom{display:flex;align-items:center;gap:10px;margin-bottom:14px;font-size:13px;color:var(--muted)}
+.zoom input{flex:1}
+.ok{text-align:center}
+.ok .tick{width:52px;height:52px;border-radius:50%;background:var(--ok);color:#fff;font-size:28px;display:flex;align-items:center;justify-content:center;margin:0 auto 12px}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <div class="hd">
+    <img id="logo" alt="" hidden>
+    <div><b id="inst">Yayasan Pendidikan Islam dan Sosial Al Azhar Muncar</b><small id="sub">Unggah foto kartu pegawai</small></div>
+  </div>
+
+  <section class="box step on" id="s1">
+    <h1>Unggah foto untuk kartu pegawai</h1>
+    <p class="muted">Masukkan NIPY Anda dan kode unggah dari admin. Foto akan diperiksa admin sebelum dicetak.</p>
+    <form id="f1" autocomplete="off">
+      <label>NIPY<input type="text" id="nipy" inputmode="text" required></label>
+      <label>Kode unggah<input type="password" id="kode" required></label>
+      <p class="err" id="e1" role="alert"></p>
+      <button class="btn primary" id="b1" type="submit">Lanjut</button>
+    </form>
+  </section>
+
+  <section class="box step" id="s2">
+    <div class="who"><b id="nama"></b><span class="muted" id="jab"></span></div>
+    <p class="muted" id="pendMsg" hidden>Anda sudah mengirim foto yang menunggu persetujuan. Mengirim lagi akan menggantikannya.</p>
+    <div class="row" style="margin-bottom:12px">
+      <button class="btn" id="bPick" type="button">Pilih foto</button>
+      <button class="btn" id="bCam" type="button">Ambil foto</button>
+    </div>
+    <ul class="tips">
+      <li>Wajah menghadap lurus ke kamera, terlihat jelas.</li>
+      <li>Latar polos dan terang, tanpa bayangan.</li>
+      <li>Berpakaian rapi, tanpa topi atau kacamata hitam.</li>
+    </ul>
+    <div class="stage" id="stage">
+      <canvas id="cv"></canvas>
+      <div class="guide" id="guide" hidden></div>
+      <div class="empty" id="empty">Pilih foto atau ambil foto dengan kamera</div>
+    </div>
+    <div class="zoom" id="zoomRow" hidden>Perbesar <input type="range" id="zoom" min="1" max="3" step="0.01" value="1" aria-label="Perbesar foto"></div>
+    <p class="muted" id="dragHint" hidden style="text-align:center">Geser foto agar wajah berada di dalam lingkaran.</p>
+    <input type="file" id="fPick" accept="image/*" hidden>
+    <input type="file" id="fCam" accept="image/*" capture="user" hidden>
+    <p class="err" id="e2" role="alert"></p>
+    <button class="btn primary" id="bSend" type="button" disabled>Kirim foto</button>
+  </section>
+
+  <section class="box step ok" id="s3">
+    <div class="tick" aria-hidden="true">✓</div>
+    <h1>Foto terkirim</h1>
+    <p>Admin akan memeriksa foto Anda sebelum kartu dicetak. Anda tidak perlu melakukan apa pun lagi.</p>
+    <button class="btn" id="bAgain" type="button">Kirim foto lain</button>
+  </section>
+
+  <section class="box step" id="sClosed">
+    <h1>Unggah foto belum dibuka</h1>
+    <p class="muted">Admin belum mengaktifkan unggah foto. Hubungi admin atau coba lagi nanti.</p>
+  </section>
+</div>
+
+<script src="config.js"></script>
+<script>
+const CFG = window.APP_CONFIG || {};
+const $ = s => document.querySelector(s);
+async function run(action, ...args){
+  if (!CFG.API_URL || /PASTE_URL/.test(CFG.API_URL)) throw new Error('URL API belum diisi di file config.js.');
+  const res = await fetch(CFG.API_URL, { method:'POST', headers:{ 'Content-Type':'text/plain;charset=utf-8' }, body: JSON.stringify({ action: action, args: args }), redirect:'follow' });
+  const j = await res.json();
+  if (!j.ok) throw new Error(j.error || 'Terjadi kesalahan.');
+  return j.data;
+}
+function show(id){ document.querySelectorAll('.step').forEach(s => s.classList.toggle('on', s.id === id)); window.scrollTo(0, 0); }
+const msg = e => String((e && e.message) || e).replace(/^Error:\s*/, '');
+
+let ident = { nipy:'', kode:'' };
+
+run('getPublicInfo').then(i => {
+  document.documentElement.style.setProperty('--brand', i.warna || '#1F4E5F');
+  document.documentElement.style.setProperty('--amber', i.aksen || '#E9A826');
+  $('#inst').textContent = i.instansi || $('#inst').textContent;
+  $('#sub').textContent = 'Unggah foto kartu pegawai';
+  if (i.logo) { const l = $('#logo'); l.src = /^https?:/.test(i.logo) ? i.logo : 'https://drive.google.com/thumbnail?id=' + encodeURIComponent(i.logo) + '&sz=w200'; l.hidden = false; }
+  if (!i.aktif) show('sClosed');
+}).catch(e => { $('#e1').textContent = msg(e); });
+
+$('#f1').addEventListener('submit', async e => {
+  e.preventDefault();
+  $('#e1').textContent = ''; $('#b1').disabled = true;
+  const nipy = $('#nipy').value.trim(), kode = $('#kode').value.trim();
+  try {
+    const r = await run('verifyEmployee', nipy, kode);
+    ident = { nipy, kode };
+    $('#nama').textContent = r.nama;
+    $('#jab').textContent = [r.kategori, r.jabatan].filter(Boolean).join(' · ');
+    $('#pendMsg').hidden = !r.pending;
+    show('s2');
+  } catch (err) { $('#e1').textContent = msg(err); }
+  finally { $('#b1').disabled = false; }
+});
+
+/* ---------- Editor foto 3:4 ---------- */
+const W = 450, H = 600, cv = $('#cv'), ctx = cv.getContext('2d');
+cv.width = W; cv.height = H;
+let img = null, minSc = 1, sc = 1, ox = 0, oy = 0, drag = null;
+
+function clamp(){
+  ox = Math.min(0, Math.max(W - img.width * sc, ox));
+  oy = Math.min(0, Math.max(H - img.height * sc, oy));
+}
+function draw(){
+  ctx.fillStyle = '#fff'; ctx.fillRect(0, 0, W, H);
+  if (img) ctx.drawImage(img, ox, oy, img.width * sc, img.height * sc);
+}
+function openFile(file){
+  if (!file) return;
+  $('#e2').textContent = '';
+  const im = new Image(), url = URL.createObjectURL(file);
+  im.onload = () => {
+    URL.revokeObjectURL(url);
+    img = im;
+    minSc = Math.max(W / im.width, H / im.height);
+    sc = minSc; $('#zoom').value = 1;
+    ox = (W - im.width * sc) / 2;
+    oy = (H - im.height * sc) * 0.2;
+    clamp(); draw();
+    $('#empty').hidden = true; $('#guide').hidden = false;
+    $('#zoomRow').hidden = false; $('#dragHint').hidden = false;
+    $('#bSend').disabled = false;
+    $('#stage').classList.add('has');
+  };
+  im.onerror = () => { $('#e2').textContent = 'Foto tidak bisa dibaca. Pilih foto lain.'; };
+  im.src = url;
+}
+$('#bPick').addEventListener('click', () => $('#fPick').click());
+$('#bCam').addEventListener('click', () => $('#fCam').click());
+$('#fPick').addEventListener('change', e => openFile(e.target.files[0]));
+$('#fCam').addEventListener('change', e => openFile(e.target.files[0]));
+
+$('#zoom').addEventListener('input', e => {
+  if (!img) return;
+  const cx = (W / 2 - ox) / sc, cy = (H / 2 - oy) / sc;
+  sc = minSc * Number(e.target.value);
+  ox = W / 2 - cx * sc; oy = H / 2 - cy * sc;
+  clamp(); draw();
+});
+cv.addEventListener('pointerdown', e => { if (!img) return; drag = { x:e.clientX, y:e.clientY }; cv.setPointerCapture(e.pointerId); });
+cv.addEventListener('pointermove', e => {
+  if (!drag || !img) return;
+  const k = W / cv.clientWidth;
+  ox += (e.clientX - drag.x) * k; oy += (e.clientY - drag.y) * k;
+  drag = { x:e.clientX, y:e.clientY };
+  clamp(); draw();
+});
+['pointerup','pointercancel'].forEach(t => cv.addEventListener(t, () => drag = null));
+
+$('#bSend').addEventListener('click', async () => {
+  if (!img) return;
+  $('#e2').textContent = ''; $('#bSend').disabled = true; $('#bSend').textContent = 'Mengirim…';
+  try {
+    await run('submitPhoto', ident.nipy, ident.kode, cv.toDataURL('image/jpeg', 0.88));
+    show('s3');
+  } catch (err) { $('#e2').textContent = msg(err); }
+  finally { $('#bSend').disabled = false; $('#bSend').textContent = 'Kirim foto'; }
+});
+$('#bAgain').addEventListener('click', () => {
+  img = null; draw(); $('#stage').classList.remove('has'); $('#empty').hidden = false; $('#guide').hidden = true;
+  $('#zoomRow').hidden = true; $('#dragHint').hidden = true; $('#bSend').disabled = true;
+  $('#fPick').value = ''; $('#fCam').value = '';
+  $('#pendMsg').hidden = false;
+  show('s2');
+});
+draw();
+</script>
+</body>
+</html>

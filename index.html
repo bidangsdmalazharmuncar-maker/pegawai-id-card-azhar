@@ -1,0 +1,647 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<base target="_top">
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>CETAK ID CARD PEGAWAI YAYASAN PENDIDIKAN ISLAM DAN SOSIAL AL AZHAR MUNCAR</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@600;700&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/qrcode-generator/1.4.4/qrcode.min.js"></script>
+<style>
+:root{--ink:#16232E;--muted:#5C6A73;--paper:#EDEFEA;--panel:#fff;--line:#D6DAD2;--brand:#1F4E5F;--amber:#E9A826;--danger:#B3382C;--ok:#2F7A4F}
+*{box-sizing:border-box}
+html,body{margin:0}
+body{font:14px/1.45 'Plus Jakarta Sans',system-ui,sans-serif;color:var(--ink);background:var(--paper)}
+button,input,select,textarea{font:inherit;color:inherit}
+
+/* ===== Antarmuka ===== */
+header.top{display:flex;align-items:center;gap:28px;padding:0 24px;background:var(--ink);color:#fff;flex-wrap:wrap}
+.ttl{padding:10px 0;line-height:1.2}
+.ttl b{display:block;font-weight:800;font-size:16px}
+.ttl small{display:block;font-size:12.5px;color:#B8C4CB;margin-top:2px}
+header.top .out{margin-left:auto;background:none;border:1px solid #4A5B68;color:#fff;padding:7px 14px;border-radius:8px;cursor:pointer;font-weight:600}
+header.top .out:hover{border-color:#fff}
+#login{display:none;max-width:400px;margin:64px auto;padding:0 20px}
+.lbox{background:#fff;border:1px solid var(--line);border-radius:12px;padding:22px}
+.lbox::before{content:"";display:block;height:4px;margin:-22px -22px 16px;background:var(--amber);border-radius:12px 12px 0 0}
+.lbox h1{font-size:20px;margin:0 0 4px}
+.lbox label{margin-top:14px}
+.err{color:var(--danger);font-size:13px;min-height:18px;margin:8px 0}
+body.locked #login{display:block}
+body.locked main,body.locked nav,body.locked #btnOut{display:none}
+.logo{display:flex;align-items:center;gap:10px;font-weight:800;font-size:16px;padding:12px 0}
+.logo i{display:block;width:26px;height:17px;border-radius:3px;background:#fff;position:relative;overflow:hidden}
+.logo i::after{content:"";position:absolute;right:0;top:0;bottom:0;width:6px;background:var(--amber)}
+nav{display:flex;gap:4px}
+nav button{background:none;border:0;color:#B8C4CB;padding:16px 14px 13px;cursor:pointer;font-weight:600;border-bottom:3px solid transparent}
+nav button:hover{color:#fff}
+nav button.on{color:#fff;border-bottom-color:var(--amber)}
+main{max-width:1180px;margin:0 auto;padding:22px 24px 60px}
+.view{display:none}.view.on{display:block}
+.bar{display:flex;gap:10px;align-items:center;flex-wrap:wrap;margin-bottom:14px}
+.bar .grow{flex:1}
+.search{min-width:240px;padding:9px 12px;border:1px solid var(--line);border-radius:8px;background:#fff}
+.btn{border:1px solid var(--line);background:#fff;padding:9px 14px;border-radius:8px;cursor:pointer;font-weight:600}
+.btn:hover{border-color:#a9b0a6}
+.btn.primary{background:var(--brand);border-color:var(--brand);color:#fff}
+.btn.primary:hover{background:#18404E}
+.btn.danger{color:var(--danger)}
+.btn.sm{padding:5px 10px;font-size:13px}
+.btn.ghost{background:none}
+.btn:disabled{opacity:.5;cursor:not-allowed}
+.tablewrap{background:var(--panel);border:1px solid var(--line);border-radius:10px;overflow:auto}
+table{border-collapse:collapse;width:100%}
+th,td{padding:9px 12px;text-align:left;border-bottom:1px solid var(--line);white-space:nowrap}
+th{font-size:12.5px;color:var(--muted);font-weight:600;background:#F7F8F5;position:sticky;top:0}
+tr:last-child td{border-bottom:0}
+td.c,th.c{text-align:center;width:44px}
+.sub{font-size:12.5px;color:var(--muted)}
+.thumb{width:34px;height:45px;border-radius:4px;object-fit:cover;background:#E3E6DF;display:flex;align-items:center;justify-content:center;font-weight:700;font-size:12px;color:var(--muted)}
+.badge{padding:2px 9px;border-radius:99px;font-size:12px;font-weight:700}
+.thumb.pend{outline:2px solid var(--amber);outline-offset:1px}
+.badge.new{background:#FBEFD0;color:#7A5200;margin-left:6px}
+.pend-box{display:flex;gap:12px;align-items:center;background:#FBF4E0;border-radius:8px;padding:10px 12px}
+.pend-box img{width:54px;height:72px;border-radius:5px;object-fit:cover;flex:none}
+.pend-box .btns{display:flex;gap:8px;margin-top:8px}
+.badge.on{background:#DDEFE4;color:var(--ok)}.badge.off{background:#EFE0DD;color:var(--danger)}
+.empty{text-align:center;color:var(--muted);padding:40px 12px!important;white-space:normal}
+.hint{color:var(--muted);font-size:13px}
+
+dialog{border:0;border-radius:12px;padding:0;width:min(640px,94vw);box-shadow:0 20px 60px rgba(0,0,0,.3)}
+dialog::backdrop{background:rgba(22,35,46,.55)}
+dialog form{padding:22px}
+dialog h2{margin:0 0 14px;font-size:18px}
+.grid{display:grid;grid-template-columns:1fr 1fr;gap:12px 14px}
+.grid .full{grid-column:1/-1}
+label{display:block;font-size:12.5px;font-weight:600;color:var(--muted)}
+label input,label select,label textarea{display:block;width:100%;margin-top:4px;padding:8px 10px;border:1px solid var(--line);border-radius:7px;background:#fff;font-weight:400;color:var(--ink)}
+label textarea{resize:vertical;min-height:64px}
+input:focus,select:focus,textarea:focus,button:focus-visible{outline:2px solid var(--amber);outline-offset:1px}
+.photo-row{display:flex;gap:14px;align-items:center}
+.photo-row img,.photo-row .ph{width:66px;height:88px;border-radius:6px;object-fit:cover;background:#E3E6DF;flex:none}
+.actions{display:flex;justify-content:flex-end;gap:10px;margin-top:18px}
+.panel{background:var(--panel);border:1px solid var(--line);border-radius:10px;padding:22px}
+.panel h2{margin:0 0 4px;font-size:17px}
+.panel p{margin:0 0 16px}
+
+#toast{position:fixed;left:50%;bottom:22px;transform:translateX(-50%);background:var(--ink);color:#fff;padding:10px 18px;border-radius:8px;opacity:0;pointer-events:none;transition:opacity .2s;z-index:50;max-width:90vw}
+#toast.show{opacity:1}#toast.err{background:var(--danger)}
+#busy{position:fixed;left:0;top:0;height:3px;width:100%;background:var(--amber);display:none;z-index:60}
+
+/* ===== Lembar cetak ===== */
+.stage{background:#9AA39B;padding:20px;border-radius:10px;overflow:auto}
+.sheet{width:297mm;height:210mm;background:#fff;margin:0 auto 18px;display:grid;grid-template-columns:repeat(5,54mm);grid-auto-rows:85.6mm;gap:4mm;justify-content:center;align-content:center;box-shadow:0 2px 14px rgba(0,0,0,.3);overflow:hidden}
+.sheet.both{grid-template-columns:repeat(4,54mm)}
+.one{width:54mm;height:85.6mm;margin:0 auto 14px;box-shadow:0 2px 14px rgba(0,0,0,.3);overflow:hidden;flex:none}
+.one .card{border:0;border-radius:0}
+
+/* ===== Kartu potret 54 x 85,6 mm — desain formal dengan lengkung emas ===== */
+.card{flex:none;--serif:'Cormorant Garamond',Georgia,'Times New Roman',serif;width:54mm;height:85.6mm;position:relative;overflow:hidden;border-radius:3mm;background:#fff;border:.15mm solid #C4CAC1;color:#16232E;font-family:'Plus Jakarta Sans',Arial,sans-serif;-webkit-print-color-adjust:exact;print-color-adjust:exact}
+.card *{box-sizing:border-box}
+
+/* --- Depan --- */
+.f-arc{position:absolute;left:0;right:0;top:0;height:27.2mm;background:var(--accent);border-radius:0 0 50% 50% / 0 0 5.5mm 5.5mm}
+.f-head{position:absolute;left:0;right:0;top:0;height:26mm;border-radius:0 0 50% 50% / 0 0 5.5mm 5.5mm;color:#fff;display:flex;align-items:flex-start;gap:2mm;padding:3.4mm 3.6mm 0;
+  background:radial-gradient(circle at 88% -10%,rgba(255,255,255,.16),transparent 55%),repeating-linear-gradient(135deg,rgba(255,255,255,.035) 0 .35mm,transparent .35mm 1.4mm),var(--brand)}
+.f-head img{flex:none;width:9mm;height:9mm;object-fit:contain;background:#fff;border-radius:50%;padding:.7mm;box-shadow:0 0 0 .3mm var(--accent)}
+.f-inst{padding-top:.3mm;min-width:0}
+.f-inst b{display:block;font-size:6.1pt;line-height:1.18;font-weight:800;letter-spacing:.01em}
+.f-inst small{display:block;font-size:4.7pt;line-height:1.2;margin-top:.7mm;color:var(--accent);font-weight:600;letter-spacing:.04em}
+.f-photo{position:absolute;left:14mm;top:15mm;width:26mm;height:34.67mm;border:.7mm solid #fff;border-radius:1.6mm;object-fit:cover;background:#E3E6DF;box-shadow:0 0 0 .4mm var(--accent),0 .8mm 2mm rgba(22,35,46,.28)}
+.f-photo.ph{display:flex;align-items:center;justify-content:center;font-weight:800;font-size:16pt;color:#7A8791}
+.f-body{position:absolute;left:3.5mm;right:3.5mm;top:51.6mm;bottom:7.4mm;display:flex;flex-direction:column;align-items:center;text-align:center}
+.f-name,.f-role{width:100%;overflow:hidden}
+.f-name{font-family:var(--serif);font-size:11.5pt;font-weight:700;line-height:1.1;color:#16232E}
+.f-name span{display:block}
+.f-name .g{white-space:nowrap}
+.f-role{font-size:7.6pt;font-weight:700;line-height:1.2;color:var(--brand);margin-top:1.3mm}
+.f-no{margin-top:auto;width:78%;padding-top:.9mm;border-top:.2mm solid var(--accent)}
+.f-no small{display:block;font-size:4.6pt;letter-spacing:.14em;color:#7A8791;font-weight:600}
+.f-no b{display:block;font-size:8pt;letter-spacing:.06em;font-variant-numeric:tabular-nums;color:var(--brand)}
+.f-foot{position:absolute;left:0;right:0;bottom:0;height:5.6mm;background:var(--brand);color:#fff;border-top:.5mm solid var(--accent);font-size:5pt;font-weight:600;letter-spacing:.05em;display:flex;align-items:center;justify-content:center}
+
+/* --- Belakang --- */
+.b-band{position:absolute;left:0;right:0;top:0;height:8.5mm;background:radial-gradient(circle at 12% -30%,rgba(255,255,255,.16),transparent 60%),repeating-linear-gradient(135deg,rgba(255,255,255,.035) 0 .35mm,transparent .35mm 1.4mm),var(--brand);color:#fff;font-size:5.8pt;font-weight:700;letter-spacing:.14em;display:flex;align-items:center;justify-content:center;padding-bottom:.6mm;border-radius:0 0 50% 50% / 0 0 3mm 3mm;box-shadow:0 .6mm 0 var(--accent)}
+.b-body{position:absolute;left:4.2mm;right:4.2mm;top:12.2mm;bottom:5.2mm;display:flex;flex-direction:column;align-items:center;text-align:center}
+.b-qr{width:24mm;height:24mm;padding:1mm;border:.25mm solid var(--accent);border-radius:1.6mm;background:#fff}
+.b-qr img{width:100%;height:100%;image-rendering:pixelated;display:block}
+.b-no{font-size:6.4pt;font-weight:800;letter-spacing:.08em;color:var(--brand);margin-top:1.2mm}
+.b-ket{font-size:5.2pt;line-height:1.45;color:#33414A;margin-top:1.6mm;max-height:12.5mm;overflow:hidden}
+.b-addr{font-size:5pt;line-height:1.4;color:#33414A;margin-top:1.8mm;padding-top:1.4mm;width:100%;border-top:.2mm solid var(--accent)}
+.b-addr b{display:block;font-size:5.6pt;color:var(--brand);margin-bottom:.3mm}
+.b-ttd{margin-top:auto;font-size:5.2pt;line-height:1.3;color:#33414A}
+.b-ttd .sp{height:6.5mm}
+.b-ttd b{font-size:5.9pt;color:#16232E;border-bottom:.2mm solid #16232E;padding-bottom:.1mm}
+.b-foot{position:absolute;left:0;right:0;bottom:0;height:3mm;background:var(--brand);border-top:.5mm solid var(--accent)}
+
+@page{size:A4 landscape;margin:0}
+@media print{
+  body{background:#fff}
+  header.top,.noprint,#toast,#busy{display:none!important}
+  main{max-width:none;padding:0}
+  .stage{background:none;padding:0;border-radius:0;overflow:visible}
+  .sheet{margin:0;box-shadow:none;break-after:page;page-break-after:always}
+  .sheet:last-child{break-after:auto;page-break-after:auto}
+  .one{margin:0;box-shadow:none;break-after:page;page-break-after:always}
+  .one:last-child{break-after:auto;page-break-after:auto}
+}
+</style>
+<style id="pageStyle"></style>
+</head>
+<body class="locked">
+<div id="busy"></div>
+<header class="top">
+  <div class="ttl"><b>Cetak ID Card Pegawai</b><small>Yayasan Pendidikan Islam dan Sosial Al Azhar Muncar</small></div>
+  <nav>
+    <button data-view="data" class="on">Data</button>
+    <button data-view="print">Cetak</button>
+    <button data-view="settings">Pengaturan</button>
+  </nav>
+  <button class="out" id="btnOut" type="button">Keluar</button>
+</header>
+
+<section id="login">
+  <div class="lbox">
+    <h1>Masuk admin</h1>
+    <p class="hint" style="margin:0">Masukkan kata sandi admin untuk mengelola data pegawai dan mencetak kartu.</p>
+    <form id="lf">
+      <label>Kata sandi<input type="password" id="pw" required autocomplete="current-password"></label>
+      <p class="err" id="le" role="alert"></p>
+      <button class="btn primary" id="lb" type="submit" style="width:100%">Masuk</button>
+    </form>
+  </div>
+</section>
+
+<main>
+  <!-- ===== DATA ===== -->
+  <section class="view on" id="view-data">
+    <div class="bar">
+      <input class="search" id="q" type="search" placeholder="Cari nama, NIPY, jabatan, mapel/bagian">
+      <select class="search" id="fFoto" style="min-width:0" aria-label="Filter foto">
+        <option value="">Semua foto</option>
+        <option value="pending">Menunggu persetujuan</option>
+        <option value="none">Belum ada foto</option>
+      </select>
+      <select class="search" id="fKat" style="min-width:0" aria-label="Filter kategori">
+        <option value="">Semua kategori</option>
+        <option>Guru</option><option>Tenaga Kependidikan</option><option>Pegawai</option>
+      </select>
+      <span class="hint"><b id="nSel">0</b> dipilih</span>
+      <span class="grow"></span>
+      <button class="btn" id="btnReload">Muat ulang</button>
+      <button class="btn danger" id="btnDel" disabled>Hapus terpilih</button>
+      <button class="btn" id="btnApprove" disabled>Setujui foto baru</button>
+      <button class="btn" id="btnToPrint" disabled>Cetak terpilih</button>
+      <button class="btn primary" id="btnAdd">Tambah orang</button>
+    </div>
+    <div class="tablewrap">
+      <table>
+        <thead><tr>
+          <th class="c"><input type="checkbox" id="chkAll" aria-label="Pilih semua"></th>
+          <th>Foto</th><th>Nama</th><th>Kategori</th><th>Jabatan</th><th>Mapel / Bagian</th><th>Berlaku sampai</th><th>Status</th><th></th>
+        </tr></thead>
+        <tbody id="tb"><tr><td colspan="9" class="empty">Memuat data…</td></tr></tbody>
+      </table>
+    </div>
+    <p class="hint">Data tersimpan di sheet “Data”. Anda juga bisa menempel data langsung di sheet, lalu klik Muat ulang.</p>
+  </section>
+
+  <!-- ===== CETAK ===== -->
+  <section class="view" id="view-print">
+    <div class="bar noprint">
+      <label style="display:flex;gap:8px;align-items:center">Kertas
+        <select id="paper" style="margin:0;width:auto">
+          <option value="a4">A4 lanskap (banyak kartu per lembar)</option>
+          <option value="card">Ukuran kartu 54 × 85,6 mm (1 kartu per halaman)</option>
+        </select>
+      </label>
+      <label style="display:flex;gap:8px;align-items:center">Isi lembar
+        <select id="mode" style="margin:0;width:auto">
+          <option value="both">Depan dan belakang (berdampingan)</option>
+          <option value="front">Depan saja</option>
+          <option value="back">Belakang saja</option>
+        </select>
+      </label>
+      <span class="hint"><b id="selCount">0</b> orang dipilih · <span id="paperHint"></span></span>
+      <span class="grow"></span>
+      <button class="btn primary" id="btnPrint">Cetak</button>
+    </div>
+    <p class="hint noprint">Kartu dicetak dalam ukuran asli 54 × 85,6 mm (CR80). Di dialog cetak, pilih skala 100% (bukan “Fit to page”), margin None/Tidak ada, dan matikan “Header dan footer”. Aktifkan “Grafik latar belakang” bila warna tidak muncul. Untuk printer kartu PVC, pilih kertas “Ukuran kartu” lalu atur ukuran kertas printer ke 54 × 85,6 mm.</p>
+    <div class="stage" id="stage"></div>
+  </section>
+
+  <!-- ===== PENGATURAN ===== -->
+  <section class="view" id="view-settings">
+    <div class="panel">
+      <h2>Tampilan kartu</h2>
+      <p class="hint">Perubahan langsung terlihat di tab Cetak setelah disimpan.</p>
+      <form id="setForm" class="grid"></form>
+      <div class="actions"><button class="btn primary" id="btnSaveSet">Simpan pengaturan</button></div>
+    </div>
+    <div class="panel" style="margin-top:16px">
+      <h2>Tautan unggah foto pegawai</h2>
+      <p class="hint">Bagikan tautan ini beserta kode unggah (diatur di atas) ke pegawai. Pegawai mengunggah fotonya sendiri, lalu Anda menyetujuinya di tab Data.</p>
+      <div class="bar" style="margin:0"><input class="search" id="upLink" readonly style="flex:1"><button class="btn" id="btnCopy" type="button">Salin tautan</button></div>
+    </div>
+  </section>
+</main>
+
+<!-- ===== Dialog orang ===== -->
+<dialog id="dlg">
+  <form id="pForm" method="dialog">
+    <h2 id="dlgTitle">Tambah orang</h2>
+    <div class="grid">
+      <label>NIPY (Nomor Induk Pegawai Yayasan)<input name="nomor" required></label>
+      <label>Nama lengkap (beserta gelar)<input name="nama" required></label>
+      <label>Kategori<select name="kategori"><option>Guru</option><option>Tenaga Kependidikan</option><option>Pegawai</option></select></label>
+      <label>Jabatan<input name="jabatan" placeholder="Mis. Guru Matematika, Staf Tata Usaha"></label>
+      <label>Mata pelajaran / Bagian<input name="unit" placeholder="Mis. Matematika, Keuangan"></label>
+      <label>Tempat, tanggal lahir<input name="ttl"></label>
+      <label>Telepon<input name="telepon" inputmode="tel"></label>
+      <label class="full">Alamat<textarea name="alamat"></textarea></label>
+      <label>Berlaku sampai<input name="berlaku" type="date"></label>
+      <label>Status<select name="status"><option>Aktif</option><option>Nonaktif</option></select></label>
+      <div class="full pend-box" id="pPend" style="display:none">
+        <img id="pPendImg" alt="Foto dari pegawai">
+        <div><b>Foto baru dari pegawai</b><div class="sub">Periksa dulu sebelum dipakai di kartu.</div>
+          <div class="btns"><button type="button" class="btn sm" id="pOk">Pakai foto ini</button><button type="button" class="btn sm danger" id="pNo">Tolak</button></div></div>
+      </div>
+      <div class="full photo-row">
+        <div id="pPrev"></div>
+        <label style="flex:1">Foto (otomatis dipotong 3:4)<input type="file" id="pFile" accept="image/*"></label>
+      </div>
+    </div>
+    <div class="actions">
+      <button type="button" class="btn" id="pCancel">Batal</button>
+      <button type="submit" class="btn primary" id="pSave">Simpan</button>
+    </div>
+  </form>
+</dialog>
+
+<dialog id="cfm">
+  <form method="dialog" style="padding:22px">
+    <h2>Hapus data?</h2>
+    <p id="cfmText" style="margin:0"></p>
+    <div class="actions">
+      <button type="button" class="btn" id="cfmNo">Batal</button>
+      <button type="button" class="btn danger" id="cfmYes">Hapus</button>
+    </div>
+  </form>
+</dialog>
+
+<div id="toast"></div>
+
+<script src="config.js"></script>
+<script>
+const CFG = window.APP_CONFIG || {};
+const $ = s => document.querySelector(s);
+const msg = e => String((e && e.message) || e).replace(/^Error:\s*/, '');
+const esc = s => String(s == null ? '' : s).replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+const S = { token: (function(){ try { return sessionStorage.getItem('tok') || ''; } catch (e) { return ''; } })(), settings:{}, people:[], sel:new Set(), q:'', kat:'', foto:'', editId:'', editFoto:'', photo:null, logo:null };
+
+async function api(action, args, auth){
+  if (!CFG.API_URL || /PASTE_URL/.test(CFG.API_URL)) throw new Error('URL API belum diisi di file config.js.');
+  const res = await fetch(CFG.API_URL, {
+    method: 'POST',
+    headers: { 'Content-Type': 'text/plain;charset=utf-8' },
+    body: JSON.stringify({ action: action, args: args || [], token: auth === false ? '' : S.token }),
+    redirect: 'follow'
+  });
+  const j = await res.json();
+  if (!j.ok) {
+    if (j.code === 'AUTH') lock();
+    throw new Error(j.error || 'Terjadi kesalahan.');
+  }
+  return j.data;
+}
+function run(fn, ...args){ return api(fn, args); }
+function lock(){
+  S.token = '';
+  try { sessionStorage.removeItem('tok'); } catch (e) {}
+  document.body.classList.add('locked');
+}
+let tt;
+function toast(msg, err){
+  const t = $('#toast'); t.textContent = msg; t.className = 'show' + (err ? ' err' : '');
+  clearTimeout(tt); tt = setTimeout(() => t.className = '', err ? 5000 : 2200);
+}
+function busy(on){ $('#busy').style.display = on ? 'block' : 'none'; }
+
+/* ---------- Util ---------- */
+function imgUrl(v){
+  if (!v) return '';
+  if (/^https?:/.test(v)) return v;
+  return 'https://drive.google.com/thumbnail?id=' + encodeURIComponent(v) + '&sz=w500';
+}
+function fmt(d){
+  if (/^\d{4}-\d{2}-\d{2}$/.test(d || '')) {
+    const [y,m,day] = d.split('-').map(Number);
+    return new Date(y, m-1, day).toLocaleDateString('id-ID', {day:'numeric', month:'long', year:'numeric'});
+  }
+  return d || '';
+}
+function initials(n){ return String(n||'?').trim().split(/\s+/).slice(0,2).map(w => w[0]).join('').toUpperCase(); }
+function chunk(a, n){ const r = []; for (let i = 0; i < a.length; i += n) r.push(a.slice(i, i + n)); return r; }
+
+function toDataUrl(file, w, h, type, mode){
+  return new Promise((ok, fail) => {
+    const img = new Image(), url = URL.createObjectURL(file);
+    img.onload = () => {
+      const c = document.createElement('canvas'), ctx = c.getContext('2d');
+      if (mode === 'crop') {                 // potong 3:4, fokus ke bagian atas (wajah)
+        c.width = w; c.height = h;
+        const r = Math.max(w / img.width, h / img.height), dw = img.width * r, dh = img.height * r;
+        ctx.fillStyle = '#fff'; ctx.fillRect(0, 0, w, h);
+        ctx.drawImage(img, (w - dw) / 2, (h - dh) * 0.2, dw, dh);
+      } else {                               // logo: muat dalam kotak, jaga transparansi
+        const r = Math.min(1, w / img.width, h / img.height);
+        c.width = Math.round(img.width * r); c.height = Math.round(img.height * r);
+        ctx.drawImage(img, 0, 0, c.width, c.height);
+      }
+      URL.revokeObjectURL(url);
+      ok(c.toDataURL(type, 0.88));
+    };
+    img.onerror = () => fail(new Error('Gambar tidak bisa dibaca.'));
+    img.src = url;
+  });
+}
+
+/* ---------- Muat data ---------- */
+function load(){
+  busy(true);
+  return run('getAll').then(d => {
+    S.settings = d.settings; S.people = d.people;
+    const ids = new Set(d.people.map(p => p.id));
+    S.sel = new Set([...S.sel].filter(id => ids.has(id)));
+    renderAll();
+  }).catch(e => toast(e.message || String(e), true)).finally(() => busy(false));
+}
+function renderAll(){ renderTable(); renderPrint(); renderSettings(); $('#upLink').value = new URL('foto.html', location.href).href; }
+
+/* ---------- Tabel ---------- */
+function filtered(){
+  const q = S.q.toLowerCase(), k = S.kat;
+  return S.people.filter(p => (!k || p.kategori === k) && (!S.foto || (S.foto === 'pending' ? !!p.fotoBaru : (!p.foto && !p.fotoBaru))) && (!q || [p.nama,p.nomor,p.jabatan,p.unit].join(' ').toLowerCase().includes(q)));
+}
+function renderTable(){
+  const rows = filtered();
+  $('#tb').innerHTML = rows.length ? rows.map(p => {
+    const pend = p.fotoBaru ? imgUrl(p.fotoBaru) : '';
+    const u = pend || imgUrl(p.foto);
+    return `<tr data-id="${p.id}">
+      <td class="c"><input type="checkbox" class="pick" ${S.sel.has(p.id) ? 'checked' : ''} aria-label="Pilih ${esc(p.nama)}"></td>
+      <td>${u ? `<img class="thumb${pend ? ' pend' : ''}" src="${u}" alt="" ${pend ? 'title="Foto baru, menunggu persetujuan"' : ''}>` : `<div class="thumb">${esc(initials(p.nama))}</div>`}</td>
+      <td><b>${esc(p.nama)}</b>${p.fotoBaru ? '<span class="badge new">Foto baru</span>' : ''}<div class="sub">${esc(p.nomor)}</div></td>
+      <td>${esc(p.kategori)}</td><td>${esc(p.jabatan)}</td><td>${esc(p.unit)}</td>
+      <td>${esc(fmt(p.berlaku))}</td>
+      <td><span class="badge ${p.status === 'Aktif' ? 'on' : 'off'}">${esc(p.status || '-')}</span></td>
+      <td class="c"><button class="btn ghost sm edit">Ubah</button></td></tr>`;
+  }).join('') : `<tr><td colspan="9" class="empty">${S.people.length ? 'Tidak ada hasil yang cocok.' : 'Belum ada data. Klik “Tambah orang”, atau isi sheet “Data” lalu klik Muat ulang.'}</td></tr>`;
+  $('#chkAll').checked = rows.length > 0 && rows.every(p => S.sel.has(p.id));
+  $('#nSel').textContent = S.sel.size;
+  const nPend = S.people.filter(p => S.sel.has(p.id) && p.fotoBaru).length;
+  $('#btnApprove').disabled = nPend === 0;
+  $('#btnApprove').textContent = nPend ? 'Setujui foto baru (' + nPend + ')' : 'Setujui foto baru';
+  $('#btnDel').disabled = $('#btnToPrint').disabled = S.sel.size === 0;
+}
+
+/* ---------- Kartu ---------- */
+function splitName(n){
+  const t = String(n || '').trim(), i = t.indexOf(',');
+  return i < 0 ? [t, ''] : [t.slice(0, i).trim(), t.slice(i + 1).trim()];   // "Nama" , "gelar belakang"
+}
+function jabatanKartu(p){
+  const j = String(p.jabatan || '').trim(), u = String(p.unit || '').trim();
+  return /^guru$/i.test(j) ? (u ? 'Guru ' + u : 'Guru') : j;              // "Guru" saja -> "Guru + mapel"
+}
+function front(p){
+  const s = S.settings, u = imgUrl(p.foto), logo = imgUrl(s.logo), [nm, gl] = splitName(p.nama);
+  return `<div class="card" style="--brand:${esc(s.warna)};--accent:${esc(s.aksen)}">
+    <div class="f-arc"></div>
+    <div class="f-head">${logo ? `<img src="${logo}" alt="">` : ''}<div class="f-inst"><b>${esc(s.instansi)}</b><small>${esc(s.subjudul)}</small></div></div>
+    ${u ? `<img class="f-photo" src="${u}" alt="">` : `<div class="f-photo ph">${esc(initials(p.nama))}</div>`}
+    <div class="f-body">
+      <div class="f-name" data-fit="11.5" data-min="6.5" data-lines="${gl ? 3 : 2}"><span>${esc(nm)}${gl ? ',' : ''}</span>${gl ? `<span class="g">${esc(gl)}</span>` : ''}</div>
+      <div class="f-role" data-fit="7.2" data-min="5.2" data-lines="2">${esc(jabatanKartu(p))}</div>
+      <div class="f-no"><small>NIPY</small><b>${esc(p.nomor)}</b></div>
+    </div>
+    <div class="f-foot">${p.berlaku ? 'Berlaku s/d ' + esc(fmt(p.berlaku)) : esc(s.tipe)}</div>
+  </div>`;
+}
+function fitText(root){
+  (root || document).querySelectorAll('[data-fit]').forEach(el => {
+    let size = parseFloat(el.dataset.fit); const min = parseFloat(el.dataset.min || 5), lines = parseInt(el.dataset.lines || 1, 10);
+    el.style.fontSize = size + 'pt';
+    const ok = () => { const lh = parseFloat(getComputedStyle(el).lineHeight) || 1; const bd = el.closest('.f-body'), g = el.querySelector('.g'); return el.scrollHeight <= lh * lines + 1 && el.scrollWidth <= el.clientWidth + 1 && (!g || g.scrollWidth <= el.clientWidth + 1) && (!bd || bd.scrollHeight <= bd.clientHeight + 1); };
+    while (size > min && !ok()) { size = Math.round((size - 0.2) * 10) / 10; el.style.fontSize = size + 'pt'; }
+  });
+}
+function qrUrl(p){
+  const s = S.settings;
+  const text = s.urlVerifikasi ? s.urlVerifikasi + encodeURIComponent(p.nomor) : (p.nomor || p.id);
+  try { const q = qrcode(0, 'M'); q.addData(text); q.make(); return q.createDataURL(4, 0); }
+  catch (e) { return ''; }
+}
+function back(p){
+  const s = S.settings;
+  const today = new Date().toLocaleDateString('id-ID', {day:'numeric', month:'long', year:'numeric'});
+  const contact = [s.telepon, s.web].filter(Boolean).join(' · ');
+  return `<div class="card" style="--brand:${esc(s.warna)};--accent:${esc(s.aksen)}">
+    <div class="b-band">${esc(s.tipe)}</div>
+    <div class="b-body">
+      <div class="b-qr"><img src="${qrUrl(p)}" alt="QR ${esc(p.nomor)}"></div>
+      <div class="b-no">${esc(p.nomor)}</div>
+      <div class="b-ket">${esc(s.ketBelakang)}</div>
+      <div class="b-addr"><b>${esc(s.instansi)}</b>${esc(s.alamat)}${contact ? '<br>' + esc(contact) : ''}</div>
+      <div class="b-ttd">${esc(s.kota)}, ${today}<br>${esc(s.jabatanTtd)}<div class="sp"></div><b>${esc(s.penandatangan)}</b></div>
+    </div>
+    <div class="b-foot"></div>
+  </div>`;
+}
+function renderPrint(){
+  const list = S.people.filter(p => S.sel.has(p.id));
+  const mode = $('#mode').value;
+  $('#selCount').textContent = list.length;
+  $('#btnPrint').disabled = !list.length;
+  if (!list.length) {
+    $('#stage').innerHTML = '<div class="empty" style="background:#fff;border-radius:8px">Belum ada yang dipilih. Centang orang di tab Data, lalu kembali ke sini.</div>';
+    return;
+  }
+  const cards = [];
+  list.forEach(p => {
+    if (mode !== 'back') cards.push(front(p));
+    if (mode !== 'front') cards.push(back(p));
+  });
+  const paper = $('#paper').value;
+  if (paper === 'card') {
+    $('#pageStyle').textContent = '@page{size:54mm 85.6mm;margin:0}';
+    $('#paperHint').textContent = 'satu kartu per halaman, ukuran 54 × 85,6 mm';
+    $('#stage').innerHTML = cards.map(c => `<section class="one">${c}</section>`).join('');
+  } else {
+    $('#pageStyle').textContent = '@page{size:A4 landscape;margin:0}';
+    $('#paperHint').textContent = mode === 'both' ? '4 orang per lembar A4 (depan dan belakang)' : '10 kartu per lembar A4 (satu sisi)';
+    $('#stage').innerHTML = chunk(cards, mode === 'both' ? 8 : 10).map(c => `<section class="sheet${mode === 'both' ? ' both' : ''}">${c.join('')}</section>`).join('');
+  }
+  fitText($('#stage'));
+  if (document.fonts && document.fonts.ready) document.fonts.ready.then(() => fitText($('#stage')));
+}
+
+/* ---------- Pengaturan ---------- */
+const SET_FIELDS = [
+  ['instansi','Nama sekolah / instansi'],['subjudul','Subjudul / tagline'],
+  ['tipe','Judul kartu'],['logo','__logo'],
+  ['warna','Warna utama','color'],['aksen','Warna aksen','color'],
+  ['alamat','Alamat','area'],['telepon','Telepon'],
+  ['web','Situs web'],['kota','Kota penerbitan'],
+  ['penandatangan','Nama penandatangan (beserta gelar)'],['jabatanTtd','Jabatan penandatangan (mis. Kepala Sekolah)'],
+  ['ketBelakang','Teks di bagian belakang','area','full'],
+  ['kodeUnggah','Kode unggah foto untuk pegawai (bagikan ke pegawai; kosongkan untuk menutup unggah)','text','full'],
+  ['urlVerifikasi','Awalan URL untuk QR (opsional, mis. https://situs.id/cek?no=). Kosong = QR berisi NIPY','text','full']
+];
+let setBuilt = false;
+function renderSettings(){
+  const f = $('#setForm');
+  if (!setBuilt) {
+    f.innerHTML = SET_FIELDS.map(([k, label, type, cls]) => {
+      if (label === '__logo') return `<label>Logo (PNG/JPG)<input type="file" id="logoFile" accept="image/*"><span class="hint" id="logoState"></span></label>`;
+      if (type === 'area') return `<label class="${cls || ''}">${label}<textarea name="${k}"></textarea></label>`;
+      return `<label class="${cls || ''}">${label}<input name="${k}" type="${type || 'text'}"></label>`;
+    }).join('');
+    $('#logoFile').addEventListener('change', async e => {
+      const file = e.target.files[0]; if (!file) return;
+      try { S.logo = await toDataUrl(file, 320, 320, 'image/png', 'fit'); $('#logoState').textContent = 'Logo baru siap disimpan.'; }
+      catch (err) { toast(err.message, true); }
+    });
+    setBuilt = true;
+  }
+  SET_FIELDS.forEach(([k, label]) => { if (f.elements[k]) f.elements[k].value = S.settings[k] || ''; });
+  $('#logoState').textContent = S.settings.logo ? 'Logo sudah terpasang.' : '';
+}
+async function saveSettings(){
+  const f = $('#setForm'), obj = {};
+  SET_FIELDS.forEach(([k]) => { if (f.elements[k]) obj[k] = f.elements[k].value; });
+  obj.logo = S.settings.logo || '';
+  busy(true); $('#btnSaveSet').disabled = true;
+  try {
+    if (S.logo) { obj.logo = await run('uploadImage', S.logo, 'logo.png'); S.logo = null; }
+    S.settings = await run('saveSettings', obj);
+    renderAll(); toast('Pengaturan tersimpan');
+  } catch (e) { toast(e.message || String(e), true); }
+  finally { busy(false); $('#btnSaveSet').disabled = false; }
+}
+
+/* ---------- Dialog orang ---------- */
+function showPrev(url, name){
+  $('#pPrev').innerHTML = url ? `<img src="${url}" alt="">` : `<div class="ph thumb" style="width:66px;height:88px;font-size:18px">${esc(initials(name))}</div>`;
+}
+function openEdit(id){
+  const p = id ? S.people.find(x => x.id === id) : { status:'Aktif', kategori:'Guru', berlaku:(new Date().getFullYear() + 1) + '-12-31' };
+  const f = $('#pForm');
+  S.editId = id || ''; S.editFoto = p.foto || ''; S.photo = null; $('#pFile').value = '';
+  ['nomor','nama','kategori','jabatan','unit','ttl','telepon','alamat','berlaku','status'].forEach(k => f.elements[k].value = p[k] || '');
+  $('#dlgTitle').textContent = id ? 'Ubah data' : 'Tambah orang';
+  showPrev(imgUrl(p.foto), p.nama);
+  $('#pPend').style.display = p.fotoBaru ? 'flex' : 'none';
+  if (p.fotoBaru) $('#pPendImg').src = imgUrl(p.fotoBaru);
+  $('#dlg').showModal();
+}
+async function approve(ids, ok){
+  busy(true);
+  try { await run('approvePhotos', ids, ok); $('#dlg').close(); await load(); toast(ok ? 'Foto disetujui' : 'Foto ditolak'); }
+  catch (e) { toast(msg(e), true); }
+  finally { busy(false); }
+}
+async function submitPerson(e){
+  e.preventDefault();
+  const f = $('#pForm'), p = { id:S.editId, foto:S.editFoto };
+  ['nomor','nama','kategori','jabatan','unit','ttl','telepon','alamat','berlaku','status'].forEach(k => p[k] = f.elements[k].value.trim());
+  busy(true); $('#pSave').disabled = true;
+  try {
+    if (S.photo) p.foto = await run('uploadImage', S.photo, 'foto-' + (p.nomor || Date.now()) + '.jpg');
+    const saved = await run('savePerson', p);
+    const i = S.people.findIndex(x => x.id === saved.id);
+    if (i >= 0) S.people[i] = saved; else S.people.push(saved);
+    $('#dlg').close(); renderAll(); toast('Tersimpan');
+  } catch (err) { toast(err.message || String(err), true); }
+  finally { busy(false); $('#pSave').disabled = false; }
+}
+
+/* ---------- Event ---------- */
+document.querySelectorAll('nav button').forEach(b => b.addEventListener('click', () => {
+  document.querySelectorAll('nav button').forEach(x => x.classList.toggle('on', x === b));
+  document.querySelectorAll('.view').forEach(v => v.classList.toggle('on', v.id === 'view-' + b.dataset.view));
+  if (b.dataset.view === 'print') renderPrint();
+}));
+function goto(v){ document.querySelector(`nav button[data-view="${v}"]`).click(); }
+
+$('#q').addEventListener('input', e => { S.q = e.target.value; renderTable(); });
+$('#fKat').addEventListener('change', e => { S.kat = e.target.value; renderTable(); });
+$('#tb').addEventListener('click', e => {
+  const tr = e.target.closest('tr[data-id]'); if (!tr) return;
+  if (e.target.classList.contains('pick')) {
+    e.target.checked ? S.sel.add(tr.dataset.id) : S.sel.delete(tr.dataset.id); renderTable();
+  } else if (e.target.classList.contains('edit')) openEdit(tr.dataset.id);
+});
+$('#chkAll').addEventListener('change', e => {
+  filtered().forEach(p => e.target.checked ? S.sel.add(p.id) : S.sel.delete(p.id)); renderTable();
+});
+$('#fFoto').addEventListener('change', e => { S.foto = e.target.value; renderTable(); });
+$('#btnApprove').addEventListener('click', () => approve(S.people.filter(p => S.sel.has(p.id) && p.fotoBaru).map(p => p.id), true));
+$('#pOk').addEventListener('click', () => approve([S.editId], true));
+$('#pNo').addEventListener('click', () => approve([S.editId], false));
+$('#btnAdd').addEventListener('click', () => openEdit(''));
+$('#btnReload').addEventListener('click', load);
+$('#btnToPrint').addEventListener('click', () => goto('print'));
+$('#mode').addEventListener('change', renderPrint);
+$('#paper').addEventListener('change', renderPrint);
+window.addEventListener('beforeprint', () => fitText($('#stage')));
+$('#btnPrint').addEventListener('click', () => window.print());
+$('#btnSaveSet').addEventListener('click', saveSettings);
+
+$('#pForm').addEventListener('submit', submitPerson);
+$('#pCancel').addEventListener('click', () => $('#dlg').close());
+$('#pFile').addEventListener('change', async e => {
+  const file = e.target.files[0]; if (!file) return;
+  try { S.photo = await toDataUrl(file, 450, 600, 'image/jpeg', 'crop'); showPrev(S.photo); }
+  catch (err) { toast(err.message, true); }
+});
+
+$('#btnDel').addEventListener('click', () => {
+  $('#cfmText').textContent = S.sel.size + ' data akan dihapus dari spreadsheet. Tindakan ini tidak bisa dibatalkan.';
+  $('#cfm').showModal();
+});
+$('#cfmNo').addEventListener('click', () => $('#cfm').close());
+$('#cfmYes').addEventListener('click', async () => {
+  const ids = [...S.sel]; $('#cfm').close(); busy(true);
+  try {
+    await run('deletePeople', ids);
+    S.people = S.people.filter(p => !S.sel.has(p.id)); S.sel.clear(); renderAll(); toast('Data dihapus');
+  } catch (e) { toast(e.message || String(e), true); }
+  finally { busy(false); }
+});
+
+$('#lf').addEventListener('submit', async e => {
+  e.preventDefault();
+  $('#le').textContent = ''; $('#lb').disabled = true;
+  try {
+    S.token = await api('login', [$('#pw').value], false);
+    try { sessionStorage.setItem('tok', S.token); } catch (x) {}
+    $('#pw').value = '';
+    document.body.classList.remove('locked');
+    await load();
+  } catch (err) { $('#le').textContent = msg(err); }
+  finally { $('#lb').disabled = false; }
+});
+$('#btnOut').addEventListener('click', () => { api('logout', []).catch(() => {}); lock(); });
+$('#btnCopy').addEventListener('click', async () => {
+  const v = $('#upLink').value;
+  try { await navigator.clipboard.writeText(v); toast('Tautan disalin'); }
+  catch (e) { $('#upLink').select(); document.execCommand('copy'); toast('Tautan disalin'); }
+});
+
+if (S.token) { document.body.classList.remove('locked'); load(); }
+else if (!CFG.API_URL || /PASTE_URL/.test(CFG.API_URL)) { $('#le').textContent = 'URL API belum diisi di file config.js.'; }
+</script>
+</body>
+</html>
