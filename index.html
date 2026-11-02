@@ -6,7 +6,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>CETAK ID CARD PEGAWAI YAYASAN PENDIDIKAN ISLAM DAN SOSIAL AL AZHAR MUNCAR</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@600;700&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcode-generator/1.4.4/qrcode.min.js"></script>
 <style>
 :root{--ink:#16232E;--muted:#5C6A73;--paper:#EDEFEA;--panel:#fff;--line:#D6DAD2;--brand:#1F4E5F;--amber:#E9A826;--danger:#B3382C;--ok:#2F7A4F}
@@ -97,7 +97,7 @@ input:focus,select:focus,textarea:focus,button:focus-visible{outline:2px solid v
 .one .card{border:0;border-radius:0}
 
 /* ===== Kartu potret 54 x 85,6 mm — desain formal dengan lengkung emas ===== */
-.card{flex:none;--serif:'Cormorant Garamond',Georgia,'Times New Roman',serif;width:54mm;height:85.6mm;position:relative;overflow:hidden;border-radius:3mm;background:#fff;border:.15mm solid #C4CAC1;color:#16232E;font-family:'Plus Jakarta Sans',Arial,sans-serif;-webkit-print-color-adjust:exact;print-color-adjust:exact}
+.card{flex:none;--serif:Arial,Helvetica,sans-serif;width:54mm;height:85.6mm;position:relative;overflow:hidden;border-radius:3mm;background:#fff;border:.15mm solid #C4CAC1;color:#16232E;font-family:Arial,Helvetica,sans-serif;-webkit-print-color-adjust:exact;print-color-adjust:exact}
 .card *{box-sizing:border-box}
 
 /* --- Depan --- */
@@ -112,10 +112,10 @@ input:focus,select:focus,textarea:focus,button:focus-visible{outline:2px solid v
 .f-photo.ph{display:flex;align-items:center;justify-content:center;font-weight:800;font-size:16pt;color:#7A8791}
 .f-body{position:absolute;left:3.5mm;right:3.5mm;top:51.6mm;bottom:7.4mm;display:flex;flex-direction:column;align-items:center;text-align:center}
 .f-name,.f-role{width:100%;overflow:hidden}
-.f-name{font-family:var(--serif);font-size:11.5pt;font-weight:700;line-height:1.1;color:#16232E}
+.f-name{font-family:Arial,Helvetica,sans-serif;font-size:10.5pt;font-weight:700;line-height:1.15;color:#16232E}
 .f-name span{display:block}
 .f-name .g{white-space:nowrap}
-.f-role{font-size:7.6pt;font-weight:700;line-height:1.2;color:var(--brand);margin-top:1.3mm}
+.f-role{font-size:7.5pt;font-weight:700;line-height:1.2;color:var(--brand);margin-top:1.3mm}
 .f-no{margin-top:auto;width:78%;padding-top:.9mm;border-top:.2mm solid var(--accent)}
 .f-no small{display:block;font-size:4.6pt;letter-spacing:.14em;color:#7A8791;font-weight:600}
 .f-no b{display:block;font-size:8pt;letter-spacing:.06em;font-variant-numeric:tabular-nums;color:var(--brand)}
@@ -422,8 +422,8 @@ function front(p){
     <div class="f-head">${logo ? `<img src="${logo}" alt="">` : ''}<div class="f-inst"><b>${esc(s.instansi)}</b><small>${esc(s.subjudul)}</small></div></div>
     ${u ? `<img class="f-photo" src="${u}" alt="">` : `<div class="f-photo ph">${esc(initials(p.nama))}</div>`}
     <div class="f-body">
-      <div class="f-name" data-fit="11.5" data-min="6.5" data-lines="${gl ? 3 : 2}"><span>${esc(nm)}${gl ? ',' : ''}</span>${gl ? `<span class="g">${esc(gl)}</span>` : ''}</div>
-      <div class="f-role" data-fit="7.2" data-min="5.2" data-lines="2">${esc(jabatanKartu(p))}</div>
+      <div class="f-name" data-fit="10.5" data-min="6.5" data-lines="${gl ? 3 : 2}"><span>${esc(nm)}${gl ? ',' : ''}</span>${gl ? `<span class="g">${esc(gl)}</span>` : ''}</div>
+      <div class="f-role" data-fit="7.5" data-min="5.5" data-lines="2">${esc(jabatanKartu(p))}</div>
       <div class="f-no"><small>NIPY</small><b>${esc(p.nomor)}</b></div>
     </div>
     <div class="f-foot">${p.berlaku ? 'Berlaku s/d ' + esc(fmt(p.berlaku)) : esc(s.tipe)}</div>
